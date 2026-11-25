@@ -124,7 +124,7 @@ class ClassifierTests(unittest.TestCase):
 
     def test_legacy_baseline_conflict_and_approval(self):
         with tempfile.TemporaryDirectory() as d:
-            a, b = (Path(d) / (n + ".csv") for n in ("a", "b"))
+            a, b = (Path(d).resolve() / (n + ".csv") for n in ("a", "b"))
             a.write_text("appid,category,needs_review\n620,解谜与密室,否\n", encoding="utf8")
             b.write_text("appid,category,needs_review\n620,23,否\n", encoding="utf8")
             groups, _, _ = c.configuration(CONFIG, "zh", "balanced", False)
@@ -144,7 +144,7 @@ class ClassifierTests(unittest.TestCase):
 
     def test_legacy_target_fallback(self):
         with tempfile.TemporaryDirectory() as d:
-            path = Path(d) / "old.csv"
+            path = Path(d).resolve() / "old.csv"
             path.write_text("appid,category,target\n620,unknown,29\n", encoding="utf8")
             groups, _, _ = c.configuration(CONFIG, "zh", "balanced", False)
             prior, _ = c.baseline([path], groups)
